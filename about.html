@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me - Lee Ann Raven</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* --- GLOBAL VARIABLES --- */
+    :root {
+        --neon-pink: #ff53e2;
+        --dark-purple: #260535;
+        --glass-bg: rgba(20, 5, 30, 0.6);
+        --text-gray: #e0e0e0;
+    }
+
+    /* --- GLOBAL STYLES --- */
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        /* Background Image */
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden; /* Prevent body scroll, we scroll inside the card */
+    }
+
+    /* --- CUSTOM SCROLLBAR (Pink Theme) --- */
+    /* Width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05); 
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--neon-pink); 
+        border-radius: 5px;
+        border: 2px solid rgba(0,0,0,0.2);
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #ff80ea; 
+    }
+
+    /* --- CARD CONTAINER --- */
+    .card-container {
+        display: flex;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        width: 95%; /* Wider card */
+        max-width: 1400px; /* Maximum width increased */
+        height: 85vh; /* Taller card */
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* --- LEFT PANEL (Sidebar) --- */
+    .left-panel {
+        background: rgba(38, 5, 53, 0.95);
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 300px; /* Fixed width for sidebar */
+        flex-shrink: 0; /* Prevents shrinking */
+        z-index: 2;
+        
+        /* Animation */
+        opacity: 0;
+        transform: translateX(-50px);
+        animation: fadeInLeft 1s forwards;
+    }
+
+    .profile-pic {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--neon-pink);
+        margin-bottom: 15px;
+        background-color: #333;
+        box-shadow: 0 0 20px rgba(255, 83, 226, 0.3);
+    }
+
+    .divider {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
+        margin: 20px 0;
+    }
+
+    /* Navigation */
+    nav { width: 100%; }
+    
+    nav a {
+        display: block;
+        margin: 10px 0;
+        padding: 12px 25px;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        transition: 0.3s;
+        font-weight: 500;
+    }
+
+    nav a.active {
+        background: var(--neon-pink);
+        border-color: var(--neon-pink);
+        box-shadow: 0 0 15px rgba(255, 83, 226, 0.4);
+        font-weight: 700;
+    }
+
+    nav a:hover:not(.active) {
+        border-color: var(--neon-pink);
+        transform: translateY(-2px);
+    }
+
+    /* Social Icons in Sidebar */
+    .sidebar-socials {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    .sidebar-socials a {
+        color: white;
+        font-size: 1.2rem;
+        transition: 0.3s;
+        opacity: 0.7;
+    }
+    .sidebar-socials a:hover {
+        color: var(--neon-pink);
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    /* --- RIGHT PANEL (Scrollable Content) --- */
+    .right-panel {
+        background: rgba(15, 5, 25, 0.7); 
+        padding: 60px;
+        flex: 1; /* Takes remaining width */
+        overflow-y: auto; /* ENABLE SCROLLING */
+        scroll-behavior: smooth;
+        position: relative;
+
+        /* Animation */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s forwards 0.3s;
+    }
+
+    /* Content Layouts */
+    .content-section {
+        margin-bottom: 60px;
+        max-width: 900px; /* Keeps text readable length */
+    }
+
+    h2.section-title {
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-bottom: 2px solid rgba(255, 83, 226, 0.3);
+        padding-bottom: 10px;
+    }
+
+    h2.section-title i { color: var(--neon-pink); }
+
+    p.bio-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-gray);
+        margin-bottom: 20px;
+    }
+
+    /* --- RESUME STYLE: TIMELINE --- */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        border-left: 2px solid rgba(255, 83, 226, 0.3);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 40px;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -37px;
+        top: 5px;
+        width: 12px;
+        height: 12px;
+        background: var(--neon-pink);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--neon-pink);
+    }
+
+    .timeline-date {
+        font-size: 0.9rem;
+        color: var(--neon-pink);
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .timeline-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: white;
+        margin: 0 0 10px 0;
+    }
+
+    .timeline-desc {
+        color: var(--text-gray);
+        line-height: 1.6;
+    }
+
+    /* --- RESUME STYLE: TOOL GRID --- */
+    .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 20px;
+    }
+
+    .tool-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .tool-card:hover {
+        background: rgba(255, 83, 226, 0.1);
+        border-color: var(--neon-pink);
+        transform: translateY(-5px);
+    }
+
+    .tool-card i {
+        font-size: 2rem;
+        color: var(--neon-pink);
+        margin-bottom: 10px;
+    }
+
+    .tool-card h4 {
+        margin: 0;
+        font-weight: 500;
+        color: white;
+    }
+
+    /* Animations */
+    @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .card-container {
+            flex-direction: column;
+            height: auto;
+            overflow: visible;
+            margin: 20px 0;
+        }
+        .left-panel {
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .right-panel {
+            overflow: visible; /* Let page scroll on mobile */
+            padding: 30px;
+        }
+        body {
+            height: auto; /* Allow full page scroll on mobile */
+            overflow-y: auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="card-container">
+    <div class="left-panel">
+        <img src="pfp1.png" alt="Profile" class="profile-pic" />
+        <h1>Lee Ann Raven</h1>
+        <p style="opacity: 0.8; margin-top:0;">Illustrator • Character Artist</p>
+        
+        <div class="divider"></div>
+        
+        <nav>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="about.html" class="active"><i class="fas fa-user"></i> About</a>
+            <a href="resume.html"><i class="fas fa-envelope"></i> Resume</a>
+            <a href="gallery.html"><i class="fas fa-palette"></i> Gallery</a>
+        </nav>
+        
+        <div class="divider"></div>
+        
+        <div class="sidebar-socials">
+            <a href="https://x.com/pinkucheese" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/pinkucheese/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.artstation.com/pinkucheese" target="_blank"><i class="fab fa-artstation"></i></a>
+            <a href="mailto:raven.alberto1@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        
+        <div class="content-section">
+            <h2 class="section-title"><i class="fas fa-user-astronaut"></i> Behind the Art</h2>
+            <p class="bio-text">
+                Hello! I'm <strong>Lee Ann Raven</strong>, a digital illustrator and aspiring game developer studying at San Sebastian College – Recoletos de Cavite. Based in the Philippines, I specialize in bringing fantasy worlds to life through vibrant colors, intricate character designs, and immersive storytelling.
+            </p>
+            <p class="bio-text">
+                My journey began with traditional sketching in the back of my notebooks, but I quickly fell in love with the limitless possibilities of digital art. Whether it's designing RPG characters, coding game logic, or creating cozy lo-fi scenes, I pour my heart into every pixel.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title"><i class="fas fa-route"></i> My Journey</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">2023 - Present</span>
+                    <h3 class="timeline-title">BS Information Technology</h3>
+                    <div class="timeline-desc">
+                        Studying at San Sebastian College. Focusing on Game Development, Data Structures, and Multimedia Arts.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2021 - 2023</span>
+                    <h3 class="timeline-title">Freelance Illustrator</h3>
+                    <div class="timeline-desc">
+                        Started taking commissions for character designs and VTuber models. Developed a unique art style focused on vibrant neon aesthetics.
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2020</span>
+                    <h3 class="timeline-title">The Beginning</h3>
+                    <div class="timeline-desc">
+                        Transitioned from traditional art to digital mediums using a drawing tablet. Learned the basics of Photoshop and Layer management.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title"><i class="fas fa-toolbox"></i> Creative Toolkit</h2>
+            
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <i class="fas fa-pen-nib"></i> <h4>Photoshop</h4>
+                </div>
+                <div class="tool-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h4>Clip Studio</h4>
+                </div>
+                <div class="tool-card">
+                    <i class="fas fa-cube"></i>
+                    <h4>Blender</h4>
+                </div>
+                <div class="tool-card">
+                    <i class="fas fa-code"></i>
+                    <h4>C++ / C#</h4>
+                </div>
+                <div class="tool-card">
+                    <i class="fas fa-video"></i>
+                    <h4>Premiere</h4>
+                </div>
+                <div class="tool-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h4>Unity</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" style="margin-bottom: 0;">
+            <h2 class="section-title"><i class="fas fa-heart"></i> What I Love</h2>
+            <p class="bio-text">
+                When I'm not drawing or coding, you can find me playing RPGs, drinking iced coffee, or exploring new aesthetics for my next project. I believe art is a constant learning process, and I am always excited to try new techniques.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
